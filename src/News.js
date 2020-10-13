@@ -1,14 +1,13 @@
 import React from 'react';
 import {
-  SafeAreaView,
+  View,
   Text,
-  ScrollView,
   Image,
-  FlatList,
   Dimensions,
+  FlatList,
+  ScrollView,
 } from 'react-native';
-
-import {NewsCard} from './components';
+import NewsCard from './components/NewsCard';
 
 const news_data = [
   {
@@ -17,7 +16,8 @@ const news_data = [
     title: 'Bulls Exit BitMEX Bitcoin Futures Market',
     description:
       'Since the announcement from U.S. regulators, BitMEX has witnessed an outflow of more than 40,000 bitcoins, currently worth more than $422 million.',
-    imageUrl:'https://static.coindesk.com/wp-content/uploads/2020/10/BitMEX-1180x628.png',
+    imageUrl:
+      'https://static.coindesk.com/wp-content/uploads/2020/10/BitMEX-1180x628.png',
   },
   {
     id: 1,
@@ -88,17 +88,17 @@ const banner_data = [
 ];
 
 const News = () => {
-  const renderNewsData = ({item}) => <NewsCard news={item} />;
-
+  const NewsList = ({item}) => <NewsCard news={item} />;
   const listHeader = () => {
     return (
       <>
         <Text style={{fontWeight: 'bold', fontSize: 50, margin: 10}}>News</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {banner_data.map((banner_item) => {
+          {banner_data.map((banner) => {
             return (
+              <View>
               <Image
-                source={{uri: banner_item.imageUrl}}
+                source={{uri: banner.imageUrl}}
                 style={{
                   width: Dimensions.get('window').width * 0.9,
                   height: Dimensions.get('window').height / 4,
@@ -106,6 +106,8 @@ const News = () => {
                   borderRadius: 10,
                 }}
               />
+              <Text style={{position:"absolute", top:190, left:20, color:"red", fontWeight:"bold", fontSize:16}}>{banner.text}</Text>
+              </View>
             );
           })}
         </ScrollView>
@@ -114,18 +116,16 @@ const News = () => {
   };
 
   return (
-    <SafeAreaView>
+    <View>
       <FlatList
         keyExtractor={(item, index) => item.id.toString()}
         data={news_data}
-        renderItem={renderNewsData}
-        numColumns={2}
-        contentContainerStyle={{
-          justifyContent: 'space-between',
-        }}
+        renderItem={NewsList}
         ListHeaderComponent={listHeader}
+        numColumns={2}
+        contentContainerStyle={{justifyContent: 'space-between'}}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
